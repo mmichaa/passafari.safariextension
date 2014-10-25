@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Author</key>
+	<string>Michael Nowak</string>
+	<key>Builder Version</key>
+	<string>10600.1.25</string>
+	<key>CFBundleDisplayName</key>
+	<string>passafari</string>
+	<key>CFBundleIdentifier</key>
+	<string>so.nowak.passafari</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.0</string>
+	<key>CFBundleVersion</key>
+	<string>1</string>
+	<key>Chrome</key>
+	<dict>
+		<key>Global Page</key>
+		<string>global.html</string>
+		<key>Popovers</key>
+		<array>
+			<dict>
+				<key>Filename</key>
+				<string>popovers/credentials.html</string>
+				<key>Height</key>
+				<string></string>
+				<key>Identifier</key>
+				<string>passafari_credentials</string>
+				<key>Width</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>Toolbar Items</key>
+		<array>
+			<dict>
+				<key>Command</key>
+				<string>passafari_open</string>
+				<key>Identifier</key>
+				<string>passafari</string>
+				<key>Image</key>
+				<string>Icon-16.png</string>
+				<key>Include By Default</key>
+				<true/>
+				<key>Label</key>
+				<string>passafari</string>
+				<key>Popover</key>
+				<string>passafari_credentials</string>
+			</dict>
+		</array>
+	</dict>
+	<key>Content</key>
+	<dict>
+		<key>Scripts</key>
+		<dict>
+			<key>End</key>
+			<array>
+				<string>end.js</string>
+			</array>
+			<key>Start</key>
+			<array>
+				<string>start.js</string>
+			</array>
+		</dict>
+	</dict>
+	<key>Description</key>
+	<string>Extensions to allow Safari to auto form-fill passwords from KeePass (requires KeePassHttp)</string>
+	<key>DeveloperIdentifier</key>
+	<string>897X8SYVFR</string>
+	<key>ExtensionInfoDictionaryVersion</key>
+	<string>1.0</string>
+	<key>Permissions</key>
+	<dict>
+		<key>Website Access</key>
+		<dict>
+			<key>Include Secure Pages</key>
+			<true/>
+			<key>Level</key>
+			<string>All</string>
+		</dict>
+	</dict>
+	<key>Website</key>
+	<string>https://nowak.so/</string>
+</dict>
+</plist>
