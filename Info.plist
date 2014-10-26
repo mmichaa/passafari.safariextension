@@ -9,7 +9,7 @@
 	<key>CFBundleDisplayName</key>
 	<string>passafari</string>
 	<key>CFBundleIdentifier</key>
-	<string>so.nowak.passafari</string>
+	<string>com.github.mmichaa.passafari</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleShortVersionString</key>
@@ -41,13 +41,13 @@
 				<key>Identifier</key>
 				<string>passafari</string>
 				<key>Image</key>
-				<string>Icon-16.png</string>
+				<string>Lock.png</string>
 				<key>Include By Default</key>
 				<true/>
 				<key>Label</key>
 				<string>passafari</string>
 				<key>Popover</key>
-				<string>passafari_credentials</string>
+				<string></string>
 			</dict>
 		</array>
 	</dict>
@@ -82,6 +82,6 @@
 		</dict>
 	</dict>
 	<key>Website</key>
-	<string>https://nowak.so/</string>
+	<string>https://github.com/mmichaa/passafari.safariextension/</string>
 </dict>
 </plist>
