@@ -13,26 +13,13 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0.alpha1</string>
+	<string>1.0.alpha2</string>
 	<key>CFBundleVersion</key>
-	<string>0.8.1</string>
+	<string>0.8.2</string>
 	<key>Chrome</key>
 	<dict>
 		<key>Global Page</key>
 		<string>global.html</string>
-		<key>Popovers</key>
-		<array>
-			<dict>
-				<key>Filename</key>
-				<string>popovers/credentials.html</string>
-				<key>Height</key>
-				<string></string>
-				<key>Identifier</key>
-				<string>passafari_credentials</string>
-				<key>Width</key>
-				<string></string>
-			</dict>
-		</array>
 		<key>Toolbar Items</key>
 		<array>
 			<dict>
@@ -46,6 +33,8 @@
 				<true/>
 				<key>Label</key>
 				<string>passafari</string>
+				<key>Menu</key>
+				<string></string>
 				<key>Popover</key>
 				<string></string>
 			</dict>
@@ -58,10 +47,6 @@
 			<key>End</key>
 			<array>
 				<string>end.js</string>
-			</array>
-			<key>Start</key>
-			<array>
-				<string>start.js</string>
 			</array>
 		</dict>
 	</dict>
@@ -81,6 +66,8 @@
 			<string>All</string>
 		</dict>
 	</dict>
+	<key>Update Manifest URL</key>
+	<string>https://raw.githubusercontent.com/mmichaa/passafari.safariextension/master/Update.plist</string>
 	<key>Website</key>
 	<string>https://github.com/mmichaa/passafari.safariextension/</string>
 </dict>

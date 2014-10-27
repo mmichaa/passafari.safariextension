@@ -1,19 +1,17 @@
 console.log('passafari: end.js');
 
-var passafari_injected_end;
-
 function passafari_injected_message_handler(event) {
 	var name = event.name;
 	var data = event.message;
 
 	console.log("passafari_injected_message_handler: " + name);
 
-	if(name === "credentials") {
+	if(name === "passafari_credentials") {
 		passafari_injected_credentials_handler(name, data);
 	}
 
 	return undefined;
-};
+}
 
 function passafari_injected_credentials_handler(event_name, event_data) {
 	if(event_data.length === 1) {
@@ -37,10 +35,9 @@ function passafari_injected_credentials_handler(event_name, event_data) {
 	return undefined;
 }
 
-if(!passafari_injected_end && window.parent === window) {
-	console.log('passafari: passafari_injected_end');
+if(window.parent === window) {
+	console.log('passafari: window.top');
 	safari.self.addEventListener("message", passafari_injected_message_handler, false);
-	passafari_injected_end = true;
 }
 
 function passafari_input_candidates() {
@@ -75,6 +72,16 @@ function passafari_input_candidates() {
 				candidates.push(inputs);
 				break;
 			}
+		}
+	}
+
+	for(var candidate_idx=0; candidate_idx < candidates.length; candidate_idx++) {
+		var inputs = candidates[candidate_idx];
+
+		if (inputs.username === document.activeElement || inputs.password === document.activeElement) {
+			console.log("passafari_input_candidates: using focused fields.")
+			candidates = [ inputs ];
+			break;
 		}
 	}
 

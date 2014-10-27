@@ -49,7 +49,7 @@ keepass.updateCredentials = function(callback, tab, entryId, username, password,
 
 	// is browser associated to keepass?
 	if(!keepass.testAssociation(tab)) {
-		browserAction.showDefault(null, tab);
+		//browserAction.showDefault(null, tab);
 		callback("error");
 		return;
 	}
@@ -102,7 +102,7 @@ keepass.retrieveCredentials = function (callback, tab, url, submiturl, forceCall
 
 	// is browser associated to keepass?
 	if(!keepass.testAssociation(tab, triggerUnlock)) {
-		browserAction.showDefault(null, tab);
+		//browserAction.showDefault(null, tab);
 		if(forceCallback) {
 			callback([]);
 		}
@@ -146,15 +146,16 @@ keepass.retrieveCredentials = function (callback, tab, url, submiturl, forceCall
 			keepass.updateLastUsed(keepass.databaseHash);
 			if(entries.length == 0) {
 				//questionmark-icon is not triggered, so we have to trigger for the normal symbol
-				browserAction.showDefault(null, tab);
+				//browserAction.showDefault(null, tab);
+				console.log("No credentials found for " + url + ".");
 			}
 		}
 		else {
-			console.log("RetrieveCredentials for " + url + " rejected");
+			console.log("Retrieve credentials for " + url + " rejected.");
 		}
 	}
 	else {
-		browserAction.showDefault(null, tab);
+		//browserAction.showDefault(null, tab);
 	}
 
 	//page.debug("keepass.retrieveCredentials() => entries.length = {1}", entries.length);
@@ -166,7 +167,7 @@ keepass.retrieveCredentials = function (callback, tab, url, submiturl, forceCall
 keepass.generatePassword = function (callback, tab, forceCallback) {
 	// is browser associated to keepass?
 	if(!keepass.testAssociation(tab)) {
-		browserAction.showDefault(null, tab);
+		//browserAction.showDefault(null, tab);
 		if(forceCallback) {
 			callback([]);
 		}
@@ -217,7 +218,7 @@ keepass.generatePassword = function (callback, tab, forceCallback) {
 		}
 	}
 	else {
-		browserAction.showDefault(null, tab);
+		//browserAction.showDefault(null, tab);
 	}
 
 	callback(passwords);
