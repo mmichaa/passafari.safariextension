@@ -8,11 +8,21 @@ function passafari_injected_message_handler(event) {
 
 	if(name === "passafari_credentials") {
 		passafari_injected_credentials_handler(name, data);
+	} else if(name === "passafari_retrieve") {
+		passafari_injected_retrieve_handler(name, data);
+	} else {
+		console.log(data);
 	}
 
 	return undefined;
 }
 
+if(window.parent === window) {
+	console.log('passafari: window.top');
+	safari.self.addEventListener("message", passafari_injected_message_handler, false);
+}
+
+// CALLED by passafari_injected_message_handler
 function passafari_injected_credentials_handler(event_name, event_data) {
 	if(event_data.length === 1) {
 		var credentials = event_data[0];
@@ -35,11 +45,32 @@ function passafari_injected_credentials_handler(event_name, event_data) {
 	return undefined;
 }
 
-if(window.parent === window) {
-	console.log('passafari: window.top');
-	safari.self.addEventListener("message", passafari_injected_message_handler, false);
+// CALLED by passafari_injected_message_handler
+function passafari_injected_retrieve_handler(event_name, event_data) {
+	var input_candidates = passafari_input_candidates();
+
+	if(input_candidates.length === 1) {
+		var inputs = input_candidates[0];
+
+		var username = inputs.username.value;
+		var password = inputs.password.value;
+
+		passafari_notify_global_page("passafari_save", {"Login": username, "Password": password});
+	} else {
+		console.log("passafari_injected_retrieve_handler: more than one inputs found.")
+		console.log(inputs);
+	}
+
+	return undefined;
 }
 
+// UTILS end.js related
+function passafari_notify_global_page(msg_name, msg_data) {
+	safari.self.tab.dispatchMessage(msg_name, msg_data);
+	return undefined;
+}
+
+// UTILS end.js related
 function passafari_input_candidates() {
 	var candidates = [];
 
