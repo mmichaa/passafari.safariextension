@@ -20,12 +20,13 @@ TODO write some useful stuff.
   - [ ] Support for single match
   - [ ] Support for multiple matches
 - [ ] Settings for hostname and port
-- [ ] Setting for language
-  - [ ] I18n support
-  - [ ] Translate into german
+- [X] Setting for language
+  - [X] I18n support
+  - [X] Translate into german
 
 ## Credits
 
 - Thanks to [SlowAES](https://code.google.com/p/slowaes/) for aes.js, cryptoHelpers.js and jsHash.js
 - Thanks to [pfn/passifox](https://github.com/pfn/passifox/) for keepass.js
 - Thanks to [webtoolkit.info](http://www.webtoolkit.info/javascript-utf8.html) for utf8.js
+- Thanks to [eligrey/l10n.js](https://github.com/eligrey/l10n.js) for l10n.js

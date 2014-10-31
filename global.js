@@ -1,3 +1,13 @@
+function passafari_settings_handler(event) {
+	console.log("passafari_settings_handler: " + event.key);
+	if(event.key === "locale") {
+		String.locale = event.newValue;
+	} else {
+		console.log(event);
+	}
+	return undefined;
+}
+
 function passafari_command_handler(event) {
 	console.log("passafari_command_handler: " + event.command);
 	if (event.command === "passafari_open") {
@@ -22,8 +32,9 @@ function passafari_message_handler(event) {
 	return undefined;
 };
 
-safari.application.addEventListener("command",   passafari_command_handler,  false);
-safari.application.addEventListener("message",   passafari_message_handler,  false);
+safari.extension.settings.addEventListener("change", passafari_settings_handler, false);
+safari.application.addEventListener("command", passafari_command_handler, false);
+safari.application.addEventListener("message", passafari_message_handler, false);
 
 
 // CALLED by passafari_command_handler
@@ -97,7 +108,7 @@ function passafari_save(event) {
 			safari.extension.removeMenu("passafari_save");
 			var menu = safari.extension.createMenu("passafari_save");
 
-			menu.appendMenuItem("passafari_credentials_0", credential.Login + " | Add", "passafari_select_save");
+			menu.appendMenuItem("passafari_credentials_0", credential.Login + " | " + "credentials.add".toLocaleString(), "passafari_select_save");
 
 			passafari_credentials_cache([credential]);
 

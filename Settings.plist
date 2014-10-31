@@ -22,5 +22,25 @@
 		<key>Type</key>
 		<string>TextField</string>
 	</dict>
+	<dict>
+		<key>DefaultValue</key>
+		<string>en</string>
+		<key>Key</key>
+		<string>locale</string>
+		<key>Title</key>
+		<string>Language</string>
+		<key>Titles</key>
+		<array>
+			<string>English</string>
+			<string>German</string>
+		</array>
+		<key>Type</key>
+		<string>PopUpButton</string>
+		<key>Values</key>
+		<array>
+			<string>en</string>
+			<string>de</string>
+		</array>
+	</dict>
 </array>
 </plist>
