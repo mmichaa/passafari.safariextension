@@ -11,7 +11,7 @@ TODO write some useful stuff.
   - [X] Support for single match
   - [X] Support for multiple matches
 - [X] Add new credentials
-  - [ ] Use password generator on empty password
+  - [X] Use password generator on empty password
   - [X] Support for no match
   - [ ] Support for single match
   - [ ] Support for multiple matches
@@ -19,7 +19,7 @@ TODO write some useful stuff.
   - [ ] Use password generator on empty password
   - [ ] Support for single match
   - [ ] Support for multiple matches
-- [ ] Settings for hostname and port
+- [X] Settings for hostname and port
 - [X] Setting for language
   - [X] I18n support
   - [X] Translate into german

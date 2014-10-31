@@ -78,14 +78,25 @@ function passafari_select_save(event) {
 	var credential = credentials[idx];
 
 	if(credential) {
-		var callback = function(code) { console.log("passafari_save: response code '" + code + "'.") };
+		var updateCallback = function(code) { console.log("passafari_save: response code '" + code + "'.") };
 		var tab = undefined;
 		var entryId = credential.Uuid;
 		var username = credential.Login;
 		var password = credential.Password;
 		var url = safari.application.activeBrowserWindow.activeTab.url;
 
-		keepass.updateCredentials(callback, tab, entryId, username, password, url);
+		if (password === undefined || password === "") {
+			passafari_generate_password(function(passwords) {
+				if(passwords[0]) {
+					password = credential.Password = passwords[0].Password;
+					console.log("passafari_select_save: generated password '" + password + "'.");
+					passafari_notify_injected("passafari_credentials", [ credential ]);
+				}
+				keepass.updateCredentials(updateCallback, tab, entryId, username, password, url);
+			});
+		} else {
+			keepass.updateCredentials(updateCallback, tab, entryId, username, password, url);
+		}
 	} else {
 		console.log("passafari_select_save: no credential found in cache for index '" + idx + "'.");
 	}
@@ -198,5 +209,11 @@ function passafari_display_credentials(credentials) {
 	toolbarItem.menu = menu;
 	toolbarItem.showMenu();
 
+	return undefined;
+}
+
+// UTILS global.js related
+function passafari_generate_password(callback, forceCallback) {
+	keepass.generatePassword(callback, undefined, forceCallback);
 	return undefined;
 }

@@ -224,24 +224,6 @@ keepass.generatePassword = function (callback, tab, forceCallback) {
 	callback(passwords);
 }
 
-keepass.copyPassword = function(callback, tab, password) {
-	var bg = chrome.extension.getBackgroundPage();
-	var c2c = bg.document.getElementById("copy2clipboard");
-	if(!c2c) {
-		var input = document.createElement('input');
-		input.type = "text";
-		input.id = "copy2clipboard";
-		bg.document.getElementsByTagName('body')[0].appendChild(input);
-		c2c = bg.document.getElementById("copy2clipboard");
-	}
-
-	c2c.value = password;
-	c2c.select();
-	document.execCommand("copy");
-	c2c.value = "";
-	callback(true);
-}
-
 keepass.associate = function(callback, tab) {
 	if(keepass.isAssociated()) {
 		console.log("KeePass already associated.");
@@ -329,27 +311,27 @@ keepass.checkStatus = function (status, tab) {
 	keepass.isKeePassHttpAvailable = true;
 
 	if(tab && page.tabs[tab.id]) {
-		delete page.tabs[tab.id].errorMessage;
+		//delete page.tabs[tab.id].errorMessage;
 	}
 	if (!success) {
 		keepass.associated.value = false;
 		keepass.associated.hash = null;
 		if(tab && page.tabs[tab.id]) {
-			page.tabs[tab.id].errorMessage = "Unknown error: " + status;
+			//page.tabs[tab.id].errorMessage = "Unknown error: " + status;
 		}
 		console.log("Error: "+ status);
 		if (status == 503) {
 			keepass.isDatabaseClosed = true;
 			console.log("KeePass database is not opened");
 			if(tab && page.tabs[tab.id]) {
-				page.tabs[tab.id].errorMessage = "KeePass database is not opened.";
+				//page.tabs[tab.id].errorMessage = "KeePass database is not opened.";
 			}
 		}
 		else if (status == 0) {
 			keepass.isKeePassHttpAvailable = false;
 			console.log("Could not connect to keepass");
 			if(tab && page.tabs[tab.id]) {
-				page.tabs[tab.id].errorMessage = "Is KeePassHttp installed and is KeePass running?";
+				//page.tabs[tab.id].errorMessage = "Is KeePassHttp installed and is KeePass running?";
 			}
 		}
 	}
