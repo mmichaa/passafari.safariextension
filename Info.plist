@@ -28,7 +28,7 @@
 				<key>Identifier</key>
 				<string>passafari</string>
 				<key>Image</key>
-				<string>Lock.png</string>
+				<string>Icon-Toolbar.png</string>
 				<key>Include By Default</key>
 				<true/>
 				<key>Label</key>
