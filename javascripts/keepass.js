@@ -222,6 +222,7 @@ keepass.generatePassword = function (callback, tab, forceCallback) {
 	}
 
 	callback(passwords);
+	return passwords;
 }
 
 keepass.associate = function(callback, tab) {

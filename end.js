@@ -1,5 +1,6 @@
 console.log('passafari: end.js');
 
+// HANDLER for message events
 function passafari_injected_message_handler(event) {
 	var name = event.name;
 	var data = event.message;
@@ -17,6 +18,7 @@ function passafari_injected_message_handler(event) {
 	return undefined;
 }
 
+// LISTENER for message only on top window
 if(window.parent === window) {
 	console.log('passafari: window.top');
 	safari.self.addEventListener("message", passafari_injected_message_handler, false);
@@ -55,10 +57,12 @@ function passafari_injected_message_readout(event_name, event_data) {
 		var username = inputs.username.value;
 		var password = inputs.password.value;
 
-		passafari_notify_global_page("passafari_message_save", {"Login": username, "Password": password});
+		passafari_notify_global_page("passafari_message_readout", {"Login": username, "Password": password, "Uuid": undefined});
 	} else {
 		console.log("passafari_injected_message_readout: more than one inputs found.")
 		console.log(inputs);
+
+		passafari_notify_global_page("passafari_message_readout", null);
 	}
 
 	return undefined;
@@ -109,7 +113,7 @@ function passafari_input_candidates() {
 	for(var candidate_idx=0; candidate_idx < candidates.length; candidate_idx++) {
 		var inputs = candidates[candidate_idx];
 
-		if (inputs.username === document.activeElement || inputs.password === document.activeElement) {
+		if(inputs.username === document.activeElement || inputs.password === document.activeElement) {
 			console.log("passafari_input_candidates: using focused fields.")
 			candidates = [ inputs ];
 			break;

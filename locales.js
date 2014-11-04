@@ -1,10 +1,12 @@
 String.toLocaleString({
 	'en': {
 		'credentials.add': 'Add',
+		'credentials.fillin': 'Fill-in',
 		'credentials.update': 'Update'
 	},
 	'de': {
 		'credentials.add': 'Hinzufügen',
+		'credentials.fillin': 'Eintragen',
 		'credentials.update': 'Aktualisieren'
 	}
 });
