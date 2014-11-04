@@ -6,10 +6,10 @@ function passafari_injected_message_handler(event) {
 
 	console.log("passafari_injected_message_handler: " + name);
 
-	if(name === "passafari_credentials") {
-		passafari_injected_credentials_handler(name, data);
-	} else if(name === "passafari_retrieve") {
-		passafari_injected_retrieve_handler(name, data);
+	if(name === "passafari_message_fillin") {
+		passafari_injected_message_fillin(name, data);
+	} else if(name === "passafari_message_readout") {
+		passafari_injected_message_readout(name, data);
 	} else {
 		console.log(data);
 	}
@@ -23,7 +23,7 @@ if(window.parent === window) {
 }
 
 // CALLED by passafari_injected_message_handler
-function passafari_injected_credentials_handler(event_name, event_data) {
+function passafari_injected_message_fillin(event_name, event_data) {
 	if(event_data.length === 1) {
 		var credentials = event_data[0];
 		var input_candidates = passafari_input_candidates();
@@ -34,11 +34,11 @@ function passafari_injected_credentials_handler(event_name, event_data) {
 			inputs.username.value = credentials.Login;
 			inputs.password.value = credentials.Password;
 		} else {
-			console.log("passafari_injected_credentials_handler: more than one inputs found.")
+			console.log("passafari_injected_message_fillin: more than one inputs found.")
 			console.log(inputs);
 		}
 	} else {
-		console.log("passafari_injected_credentials_handler: more than one credentials found.")
+		console.log("passafari_injected_message_fillin: more than one credentials found.")
 		console.log(event_data);
 	}
 
@@ -46,7 +46,7 @@ function passafari_injected_credentials_handler(event_name, event_data) {
 }
 
 // CALLED by passafari_injected_message_handler
-function passafari_injected_retrieve_handler(event_name, event_data) {
+function passafari_injected_message_readout(event_name, event_data) {
 	var input_candidates = passafari_input_candidates();
 
 	if(input_candidates.length === 1) {
@@ -55,9 +55,9 @@ function passafari_injected_retrieve_handler(event_name, event_data) {
 		var username = inputs.username.value;
 		var password = inputs.password.value;
 
-		passafari_notify_global_page("passafari_save", {"Login": username, "Password": password});
+		passafari_notify_global_page("passafari_message_save", {"Login": username, "Password": password});
 	} else {
-		console.log("passafari_injected_retrieve_handler: more than one inputs found.")
+		console.log("passafari_injected_message_readout: more than one inputs found.")
 		console.log(inputs);
 	}
 

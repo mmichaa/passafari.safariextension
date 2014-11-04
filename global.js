@@ -10,12 +10,12 @@ function passafari_settings_handler(event) {
 
 function passafari_command_handler(event) {
 	console.log("passafari_command_handler: " + event.command);
-	if (event.command === "passafari_open") {
-		passafari_open(event);
-	} else if (event.command === "passafari_select_credentials") {
-		passafari_select_credentials(event);
-	} else if (event.command === "passafari_select_save") {
-		passafari_select_save(event);
+	if (event.command === "passafari_command_activate") {
+		passafari_command_activate(event);
+	} else if (event.command === "passafari_command_select") {
+		passafari_command_select(event);
+	} else if (event.command === "passafari_command_save") {
+		passafari_command_save(event);
 	} else {
 		console.log(event);
 	}
@@ -24,8 +24,8 @@ function passafari_command_handler(event) {
 
 function passafari_message_handler(event) {
 	console.log("passafari_message_handler: " + event.name);
-	if (event.name == "passafari_save") {
-		passafari_save(event);
+	if (event.name == "passafari_message_save") {
+		passafari_message_save(event);
 	} else {
 		console.log(event);
 	}
@@ -38,15 +38,15 @@ safari.application.addEventListener("message", passafari_message_handler, false)
 
 
 // CALLED by passafari_command_handler
-function passafari_open(event) {
+function passafari_command_activate(event) {
 	passafari_associate();
 	passafari_credentials_cache(null);
 
 	passafari_retrieve_credentials(function(credentials) {
 		if (credentials.length === 0) {
-			passafari_notify_injected("passafari_retrieve");
+			passafari_notify_injected("passafari_message_readout");
 		} else if (credentials.length === 1) {
-			passafari_notify_injected("passafari_credentials", credentials);
+			passafari_notify_injected("passafari_message_fillin", credentials);
 		} else {
 			passafari_display_credentials(credentials);
 		}
@@ -56,29 +56,29 @@ function passafari_open(event) {
 }
 
 // CALLED by passafari_command_handler
-function passafari_select_credentials(event) {
+function passafari_command_select(event) {
 	var idx = parseInt( event.target.identifier.split("_").pop() );
 	var credentials = passafari_credentials_cache(null);
 
 	if (credentials.length === 0) {
 		// NOOP
 	} else if (credentials.length === 1) {
-		passafari_notify_injected("passafari_credentials", credentials);
+		passafari_notify_injected("passafari_message_fillin", credentials);
 	} else {
-		passafari_notify_injected("passafari_credentials", [ credentials[idx] ]);
+		passafari_notify_injected("passafari_message_fillin", [ credentials[idx] ]);
 	}
 
 	return undefined;
 }
 
 // CALLED by passafari_command_handler
-function passafari_select_save(event) {
+function passafari_command_save(event) {
 	var idx = parseInt( event.target.identifier.split("_").pop() );
 	var credentials = passafari_credentials_cache(null);
 	var credential = credentials[idx];
 
 	if(credential) {
-		var updateCallback = function(code) { console.log("passafari_save: response code '" + code + "'.") };
+		var updateCallback = function(code) { console.log("passafari_command_save: response code '" + code + "'.") };
 		var tab = undefined;
 		var entryId = credential.Uuid;
 		var username = credential.Login;
@@ -89,8 +89,8 @@ function passafari_select_save(event) {
 			passafari_generate_password(function(passwords) {
 				if(passwords[0]) {
 					password = credential.Password = passwords[0].Password;
-					console.log("passafari_select_save: generated password '" + password + "'.");
-					passafari_notify_injected("passafari_credentials", [ credential ]);
+					console.log("passafari_command_save: generated password '" + password + "'.");
+					passafari_notify_injected("passafari_message_fillin", [ credential ]);
 				}
 				keepass.updateCredentials(updateCallback, tab, entryId, username, password, url);
 			});
@@ -98,17 +98,14 @@ function passafari_select_save(event) {
 			keepass.updateCredentials(updateCallback, tab, entryId, username, password, url);
 		}
 	} else {
-		console.log("passafari_select_save: no credential found in cache for index '" + idx + "'.");
+		console.log("passafari_command_save: no credential found in cache for index '" + idx + "'.");
 	}
 
 	return undefined;
 }
 
 // CALLED by passafari_message_handler
-function passafari_save(event) {
-	console.log("passafari_save:");
-	console.log(event);
-
+function passafari_message_save(event) {
 	var credentials = passafari_credentials_cache(null) || [];
 	var credential = event.message;
 
@@ -116,20 +113,19 @@ function passafari_save(event) {
 		if (credential && credential.Login.length > 0) {
 			var toolbarItem = passafari_toolbar_item();
 
-			safari.extension.removeMenu("passafari_save");
-			var menu = safari.extension.createMenu("passafari_save");
+			safari.extension.removeMenu("passafari_add");
+			var menu = safari.extension.createMenu("passafari_add");
 
-			menu.appendMenuItem("passafari_credentials_0", credential.Login + " | " + "credentials.add".toLocaleString(), "passafari_select_save");
+			menu.appendMenuItem("passafari_credentials_0", credential.Login + " | " + "credentials.add".toLocaleString(), "passafari_command_save");
 
 			passafari_credentials_cache([credential]);
 
 			toolbarItem.menu = menu;
 			toolbarItem.showMenu();
 		}
-	} else if (credentials.length === 1) {
-		// NOOP
 	} else {
-		// NOOP
+		console.log("passafari_message_save: more than one credentials found.");
+		console.log(event);
 	}
 }
 
@@ -201,7 +197,7 @@ function passafari_display_credentials(credentials) {
 	for(var idx = 0; idx < credentials.length; idx++) {
 		var credential = credentials[idx];
 
-		menu.appendMenuItem("passafari_credentials_" + idx, credential.Login + " | " + credential.Name, "passafari_select_credentials");
+		menu.appendMenuItem("passafari_credentials_" + idx, credential.Login + " | " + credential.Name, "passafari_command_select");
 	}
 
 	passafari_credentials_cache(credentials);

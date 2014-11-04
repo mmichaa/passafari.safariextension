@@ -24,7 +24,7 @@
 		<array>
 			<dict>
 				<key>Command</key>
-				<string>passafari_open</string>
+				<string>passafari_command_activate</string>
 				<key>Identifier</key>
 				<string>passafari</string>
 				<key>Image</key>
