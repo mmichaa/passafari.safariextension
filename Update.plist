@@ -10,11 +10,11 @@
        <key>Developer Identifier</key>
        <string>897X8SYVFR</string>
        <key>CFBundleVersion</key>
-       <string>1.0.alpha5</string>
+       <string>1.0.beta1</string>
        <key>CFBundleShortVersionString</key>
-       <string>0.8.5</string>
+       <string>0.9.1</string>
        <key>URL</key>
-       <string>https://github.com/mmichaa/passafari.safariextension/releases/download/v1.0.alpha5/passafari-v1.0.alpha5.safariextz</string>
+       <string>https://github.com/mmichaa/passafari.safariextension/releases/download/v1.0.beta1/passafari-v1.0.beta1.safariextz</string>
      </dict>
    </array>
 </dict>

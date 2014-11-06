@@ -107,6 +107,7 @@ function passafari_command_update(event) {
 function passafari_message_readout(event) {
 	var credentials = passafari_credentials_cache();
 	var readout = event.message;
+	var readout_as_new_credential = true;
 
 	for(var idx = 0; idx < credentials.length; idx++) {
 		credentials[idx].passafari_command = "passafari_command_select";
@@ -116,18 +117,23 @@ function passafari_message_readout(event) {
 		readout.passafari_command = "passafari_command_update";
 
 		for(var idx = 0; idx < credentials.length; idx++) {
-			if(credentials[idx].Login === readout.Login) {
-				if(credentials[idx].Password === readout.Password) {
-					readout = undefined;
-					break;
+			var credential = credentials[idx];
+
+			if(credential.Login === readout.Login) {
+				if(credential.Password !== readout.Password) {
+					var credential_upd = clone(credential);
+					credential_upd.passafari_command = "passafari_command_update"
+					credential_upd.Password = readout.Password;
+					credentials.push(credential_upd);
+					continue;
 				} else {
-					readout.Uuid = credentials[idx].Uuid;
-					break;
+					readout_as_new_credential = false;
+					continue;
 				}
 			}
 		}
 
-		if (readout !== undefined) {
+		if(readout_as_new_credential) {
 			credentials.push(readout);
 		}
 	}
@@ -147,17 +153,47 @@ function passafari_display_credentials(credentials) {
 
 	safari.extension.removeMenu("passafari_credentials");
 	var menu = safari.extension.createMenu("passafari_credentials");
+	var menu_update_item_added = (credentials.length > 1) ? false : true;
+	var menu_add_item_added = (credentials.length > 1) ? false : true;
 
 	for(var idx = 0; idx < credentials.length; idx++) {
 		var credential = credentials[idx];
+		var menu_item = undefined;
+		var menu_item_label = undefined;
+		var menu_item_image = undefined;
 
 		if(credential.passafari_command === "passafari_command_select") {
-			menu.appendMenuItem("passafari_credentials_" + idx, credential.Login + " | " + credential.Name, credential.passafari_command); // OR "credentials.fillin".toLocaleString()
+			//menu_item_label = "credentials.fillin".toLocaleString() + ": " + credential.Login + " (" + credential.Name + ")";
+			menu_item_label = credential.Login + " (" + credential.Name + ")";
+			menu_item_image = safari.extension.baseURI + "images/font-awesome-pencil-square-o.png";
 		} else if(credential.passafari_command === "passafari_command_update" && credential.Uuid !== undefined) {
-			menu.appendMenuItem("passafari_credentials_" + idx, credential.Login + " | " + "credentials.update".toLocaleString(), credential.passafari_command);
+			//menu_item_label = "credentials.update".toLocaleString() + ": " + credential.Login + " (" + credential.Name + ")";
+			menu_item_label = credential.Login + " (" + credential.Name + ")";
+			menu_item_image = safari.extension.baseURI + "images/font-awesome-floppy-o.png";
+
+			if (!menu_update_item_added) {
+				menu.appendSeparator("passafari_credentials_update_section");
+				menu_update_item_added = true;
+			}
 		} else if(credential.passafari_command === "passafari_command_update" && credential.Uuid === undefined) {
-			menu.appendMenuItem("passafari_credentials_" + idx, credential.Login + " | " + "credentials.add".toLocaleString(), credential.passafari_command);
+			//menu_item_label = "credentials.add".toLocaleString() + ": " + credential.Login;
+			menu_item_label = credential.Login;
+			menu_item_image = safari.extension.baseURI + "images/font-awesome-plus-square-o.png";
+
+			if (credential.Password === undefined || credential.Password === "") {
+				menu_item_label = menu_item_label + " (" + "credentials.password_generated".toLocaleString() + ")";
+			} else {
+				menu_item_label = menu_item_label + " (" + "credentials.password_readout".toLocaleString() + ")";
+			}
+
+			if (!menu_add_item_added) {
+				menu.appendSeparator("passafari_credentials_add_section");
+				menu_add_item_added = true;
+			}
 		}
+
+		menu_item = menu.appendMenuItem("passafari_credentials_" + idx, menu_item_label, credential.passafari_command);
+		menu_item.image = menu_item_image;
 	}
 
 	passafari_credentials_cache(credentials);

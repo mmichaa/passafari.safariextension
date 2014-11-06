@@ -37,6 +37,8 @@ TODO write some useful stuff.
 - Thanks to [pfn/passifox](https://github.com/pfn/passifox/) for keepass.js
 - Thanks to [webtoolkit.info](http://www.webtoolkit.info/javascript-utf8.html) for utf8.js
 - Thanks to [eligrey/l10n.js](https://github.com/eligrey/l10n.js) for l10n.js
+- Thanks to [stackoverflow.com](http://stackoverflow.com/a/728694/888294) for clone.js
+- Thanks to [FortAwesome/Font-Awesome](https://github.com/FortAwesome/Font-Awesome) for some icons
 - Thanks to [mstarke/MacPass](https://github.com/mstarke/MacPass) for MacPass.app
 
 ## Contributing
