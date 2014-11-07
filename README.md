@@ -30,6 +30,9 @@ TODO write some useful stuff.
 - [X] Setting for language
   - [X] I18n support
   - [X] Translate into german
+- [ ] Fill-in password
+  - [ ] Forms with one one password field only
+  - [ ] Forms with multiple password fields only
 
 ## Credits
 
