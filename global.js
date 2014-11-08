@@ -82,10 +82,11 @@ function passafari_command_update(event) {
 	if(credential) {
 		var updateCallback = function(code) { console.log("passafari_command_update: response code '" + code + "'.") };
 		var tab = undefined;
-		var entryId = credential.Uuid;
+		var entry_id = credential.Uuid;
 		var username = credential.Login;
 		var password = credential.Password;
-		var url = safari.application.activeBrowserWindow.activeTab.url;
+		var url = passafari_format_url(passafari_active_tab_url());
+		var submit_url = passafari_format_submit_url(credential.SubmitUrl);
 
 		if(password === undefined || password === "") {
 			var passwords = passafari_generate_password();
@@ -95,7 +96,7 @@ function passafari_command_update(event) {
 				passafari_notify_injected("passafari_message_fillin", [ credential ]);
 			}
 		}
-		keepass.updateCredentials(updateCallback, tab, entryId, username, password, url);
+		keepass.updateCredentials(updateCallback, tab, entry_id, username, password, url, submit_url);
 	} else {
 		console.log("passafari_command_update: no credential found in cache for index '" + idx + "'.");
 	}
@@ -124,6 +125,7 @@ function passafari_message_readout(event) {
 					var credential_upd = clone(credential);
 					credential_upd.passafari_command = "passafari_command_update"
 					credential_upd.Password = readout.Password;
+					credential_upd.SubmitUrl = readout.SubmitUrl;
 					credentials.push(credential_upd);
 					continue;
 				} else {
@@ -163,27 +165,30 @@ function passafari_display_credentials(credentials) {
 		var menu_item_image = undefined;
 
 		if(credential.passafari_command === "passafari_command_select") {
-			//menu_item_label = "credentials.fillin".toLocaleString() + ": " + credential.Login + " (" + credential.Name + ")";
 			menu_item_label = credential.Login + " (" + credential.Name + ")";
 			menu_item_image = safari.extension.baseURI + "images/font-awesome-pencil-square-o.png";
 		} else if(credential.passafari_command === "passafari_command_update" && credential.Uuid !== undefined) {
-			//menu_item_label = "credentials.update".toLocaleString() + ": " + credential.Login + " (" + credential.Name + ")";
-			menu_item_label = credential.Login + " (" + credential.Name + ")";
+			menu_item_label = credential.Login + " (" + credential.Name;
 			menu_item_image = safari.extension.baseURI + "images/font-awesome-floppy-o.png";
+
+			if (credential.Password === undefined || credential.Password === "") {
+				menu_item_label = menu_item_label + "; " + "credentials.password_generated".toLocaleString() + ")";
+			} else {
+				menu_item_label = menu_item_label + "; " + "credentials.password_entered".toLocaleString() + ")";
+			}
 
 			if (!menu_update_item_added) {
 				menu.appendSeparator("passafari_credentials_update_section");
 				menu_update_item_added = true;
 			}
 		} else if(credential.passafari_command === "passafari_command_update" && credential.Uuid === undefined) {
-			//menu_item_label = "credentials.add".toLocaleString() + ": " + credential.Login;
 			menu_item_label = credential.Login;
 			menu_item_image = safari.extension.baseURI + "images/font-awesome-plus-square-o.png";
 
 			if (credential.Password === undefined || credential.Password === "") {
 				menu_item_label = menu_item_label + " (" + "credentials.password_generated".toLocaleString() + ")";
 			} else {
-				menu_item_label = menu_item_label + " (" + "credentials.password_readout".toLocaleString() + ")";
+				menu_item_label = menu_item_label + " (" + "credentials.password_entered".toLocaleString() + ")";
 			}
 
 			if (!menu_add_item_added) {
@@ -215,6 +220,10 @@ function passafari_toolbar_item() {
 	return safari.extension.toolbarItems[0];
 }
 
+function passafari_active_tab_url() {
+	return safari.application.activeBrowserWindow.activeTab.url;
+}
+
 // UTILS global.js related
 function passafari_credentials_cache(credentials) {
 	if(credentials === undefined) {
@@ -227,6 +236,60 @@ function passafari_credentials_cache(credentials) {
 	}
 
 	return credentials;
+}
+
+// UTILS global.js related
+function passafari_format_url(url) {
+	var format = safari.extension.settings.url_format;
+
+	if(format === "protocol_host_path") {
+		return passafari_url_protocol_host_path_only(url);
+	} else if(format === "protocol_host") {
+		return passafari_url_protocol_host_only(url);
+	} else if(format === "host") {
+		return passafari_url_host_only(url);
+	} else {
+		return url;
+	}
+}
+
+// UTILS global.js related
+function passafari_format_submit_url(url) {
+	var format = safari.extension.settings.submit_url_format;
+
+	if(format === "protocol_host_path") {
+		return passafari_url_protocol_host_path_only(url);
+	} else if(format === "protocol_host") {
+		return passafari_url_protocol_host_only(url);
+	} else if(format === "host") {
+		return passafari_url_host_only(url);
+	} else {
+		return url;
+	}
+}
+
+// UTILS global.js related (passafari_format_url & passafari_format_submit_url)
+function passafari_url_host_only(url) {
+	var link = document.createElement("a");
+	link.href = url;
+
+	return link.host;
+}
+
+// UTILS global.js related (passafari_format_url & passafari_format_submit_url)
+function passafari_url_protocol_host_only(url) {
+	var link = document.createElement("a");
+	link.href = url;
+
+	return link.protocol + "//" + link.host;
+}
+
+// UTILS global.js related (passafari_format_url & passafari_format_submit_url)
+function passafari_url_protocol_host_path_only(url) {
+	var link = document.createElement("a");
+	link.href = url;
+
+	return link.protocol + "//" + link.host + link.pathname;
 }
 
 // UTILS global.js / keepass.js related
@@ -251,21 +314,21 @@ function passafari_associate(event) {
 function passafari_retrieve_credentials(callback) {
 	callback = (callback === undefined) ? function(credentials) {} : callback;
 	var tab = undefined;
-	var url = safari.application.activeBrowserWindow.activeTab.url;
-	var submiturl = undefined;
-	var forceCallback = false;
-	var triggerUnlock = true;
+	var url = passafari_format_url(passafari_active_tab_url());
+	var submit_url = passafari_format_submit_url(passafari_active_tab_url());
+	var force_callback = false;
+	var trigger_unlock = true;
 
 	if(url) {
-		return keepass.retrieveCredentials(callback, tab, url, submiturl, forceCallback, triggerUnlock);
+		return keepass.retrieveCredentials(callback, tab, url, submit_url, force_callback, trigger_unlock);
 	} else {
 		return undefined;
 	}
 }
 
 // UTILS global.js / keepass.js related
-function passafari_generate_password(callback, forceCallback) {
+function passafari_generate_password(callback, force_callback) {
 	callback = (callback === undefined) ? function(passwords) {} : callback;
 
-	return keepass.generatePassword(callback, undefined, forceCallback);
+	return keepass.generatePassword(callback, undefined, force_callback);
 }

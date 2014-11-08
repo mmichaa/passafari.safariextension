@@ -1,17 +1,11 @@
 String.toLocaleString({
 	'en': {
-		'credentials.add': 'Add',
-		'credentials.fillin': 'Fill-in',
-		'credentials.update': 'Update',
-		'credentials.password_generated': 'Generated Password',
-		'credentials.password_readout': 'Readout Password'
+		'credentials.password_generated': 'generated password',
+		'credentials.password_entered': 'entered password'
 	},
 	'de': {
-		'credentials.add': 'Hinzufügen',
-		'credentials.fillin': 'Eintragen',
-		'credentials.update': 'Aktualisieren',
-		'credentials.password_generated': 'Generiertes Passwort',
-		'credentials.password_readout': 'Ausgelesenes Password'
+		'credentials.password_generated': 'generiertes Passwort',
+		'credentials.password_entered': 'eingegebenes Passwort'
 	}
 });
 

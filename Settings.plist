@@ -24,6 +24,54 @@
 	</dict>
 	<dict>
 		<key>DefaultValue</key>
+		<string>host</string>
+		<key>Key</key>
+		<string>url_format</string>
+		<key>Title</key>
+		<string>URL-Format</string>
+		<key>Titles</key>
+		<array>
+			<string>Full</string>
+			<string>Protocol, Host &amp; Path</string>
+			<string>Protocol &amp; Host</string>
+			<string>Host</string>
+		</array>
+		<key>Type</key>
+		<string>PopUpButton</string>
+		<key>Values</key>
+		<array>
+			<string>full</string>
+			<string>protocol_host_path</string>
+			<string>protocol_host</string>
+			<string>host</string>
+		</array>
+	</dict>
+	<dict>
+		<key>DefaultValue</key>
+		<string>protocol_host</string>
+		<key>Key</key>
+		<string>submit_url_format</string>
+		<key>Title</key>
+		<string>Submit-URL-Format</string>
+		<key>Titles</key>
+		<array>
+			<string>Full</string>
+			<string>Protocol, Host &amp; Path</string>
+			<string>Protocol &amp; Host</string>
+			<string>Host</string>
+		</array>
+		<key>Type</key>
+		<string>PopUpButton</string>
+		<key>Values</key>
+		<array>
+			<string>full</string>
+			<string>protocol_host_path</string>
+			<string>protocol_host</string>
+			<string>host</string>
+		</array>
+	</dict>
+	<dict>
+		<key>DefaultValue</key>
 		<string>en</string>
 		<key>Key</key>
 		<string>locale</string>

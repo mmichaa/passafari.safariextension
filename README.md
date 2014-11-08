@@ -12,6 +12,10 @@ TODO write some useful stuff.
 
 TODO write some useful stuff.
 
+## Settings
+
+TODO write some useful stuff.
+
 ## Features
 
 - [X] Associate with KeePassHTTP
@@ -30,9 +34,15 @@ TODO write some useful stuff.
 - [X] Setting for language
   - [X] I18n support
   - [X] Translate into german
-- [ ] Fill-in password only
-  - [ ] Forms with one one password field only
-  - [ ] Forms with multiple password fields only
+- [X] Fill-in password
+  - [X] Forms with one password field only
+  - [X] Forms with two password fields only
+- [X] Setting for host-only URL on add/update
+- [X] Setting for protocol-host-path-only Submit-URL on add/update
+- [ ] Setting for auto-submit after fill-in
+  - [ ] Auto submit form after fill-in
+- [ ] Setting for auto fill-in
+  - [ ] Auto fill-in credentialson page visit
 
 ## Credits
 

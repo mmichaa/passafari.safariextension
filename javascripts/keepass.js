@@ -37,11 +37,12 @@ keepass.updateSetting = function(name, new_value) {
 	return new_value;
 }
 
-keepass.addCredentials = function(callback, tab, username, password, url) {
-	keepass.updateCredentials(callback, tab, null, username, password, url);
+keepass.addCredentials = function(callback, tab, username, password, url, submitUrl) {
+	keepass.updateCredentials(callback, tab, null, username, password, url, submitUrl);
 }
 
-keepass.updateCredentials = function(callback, tab, entryId, username, password, url) {
+keepass.updateCredentials = function(callback, tab, entryId, username, password, url, submitUrl) {
+	submitUrl = (typeof submitUrl == "string") ? submitUrl : url;
 	//page.debug("keepass.updateCredentials(callback, {1}, {2}, {3}, [password], {4})", tab.id, entryId, username, url);
 
 	// unset error message
@@ -63,12 +64,11 @@ keepass.updateCredentials = function(callback, tab, entryId, username, password,
 	var key = verifier[1];
 	var iv = request.Nonce;
 
-
 	request.Login = keepass.encrypt(username, key, iv);
 
 	request.Password = keepass.encrypt(password, key, iv);
 	request.Url = keepass.encrypt(url, key, iv);
-	request.SubmitUrl = keepass.encrypt(url, key, iv);
+	request.SubmitUrl = keepass.encrypt(submitUrl, key, iv);
 
 	if(entryId) {
 		request.Uuid = keepass.encrypt(entryId, key, iv);

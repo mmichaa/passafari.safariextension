@@ -28,13 +28,14 @@ if(window.parent === window) {
 function passafari_injected_message_fillin(event_name, event_data) {
 	if(event_data.length === 1) {
 		var credentials = event_data[0];
-		var input_candidates = passafari_input_candidates();
+		var input_candidates = passafari_input_candidates(true);
 
 		if(input_candidates.length === 1) {
 			var inputs = input_candidates[0];
 
-			inputs.username.value = credentials.Login;
-			inputs.password.value = credentials.Password;
+			if(inputs.username) { inputs.username.value = credentials.Login; }
+			if(inputs.password) { inputs.password.value = credentials.Password; }
+			if(inputs.password_confirmation) { inputs.password_confirmation.value = credentials.Password; }
 		} else {
 			console.log("passafari_injected_message_fillin: more than one inputs found.")
 			console.log(inputs);
@@ -49,15 +50,16 @@ function passafari_injected_message_fillin(event_name, event_data) {
 
 // CALLED by passafari_injected_message_handler
 function passafari_injected_message_readout(event_name, event_data) {
-	var input_candidates = passafari_input_candidates();
+	var input_candidates = passafari_input_candidates(false);
 
 	if(input_candidates.length === 1) {
 		var inputs = input_candidates[0];
 
 		var username = inputs.username.value;
 		var password = inputs.password.value;
+		var submit_url = inputs.username.form.action;
 
-		passafari_notify_global_page("passafari_message_readout", {"Login": username, "Password": password, "Uuid": undefined});
+		passafari_notify_global_page("passafari_message_readout", {"Login": username, "Password": password, "SubmitUrl": submit_url, "Uuid": undefined});
 	} else {
 		console.log("passafari_injected_message_readout: more than one inputs found.")
 		console.log(inputs);
@@ -75,7 +77,7 @@ function passafari_notify_global_page(msg_name, msg_data) {
 }
 
 // UTILS end.js related
-function passafari_input_candidates() {
+function passafari_input_candidates(allow_password_only) {
 	var candidates = [];
 
 	for(var form_idx=0; form_idx < document.forms.length; form_idx++) {
@@ -85,7 +87,7 @@ function passafari_input_candidates() {
 			continue;
 		}
 
-		var inputs = { "username": undefined, "password": undefined };
+		var inputs = { "username": undefined, "password": undefined, "password_confirmation": undefined };
 
 		for(var elem_idx=0; elem_idx < form.elements.length; elem_idx++) {
 			var elem = form.elements[elem_idx];
@@ -97,23 +99,32 @@ function passafari_input_candidates() {
 			var elem_type = elem.type.toLowerCase();
 
 			if(elem_type === "password") {
-				inputs["password"] = elem;
+				if(inputs.password === undefined) { inputs.password = elem; }
+				else if(inputs.password_confirmation === undefined) { inputs.password_confirmation = elem; }
 			}
-			else if(elem_type === 'email' || elem_type === 'text') {
-				inputs["username"] = elem;
+			else if(elem_type === "email" || elem_type === "text") {
+				inputs.username = elem;
 			}
 
-			if(inputs["username"] && inputs["password"]) {
-				candidates.push(inputs);
+			if(inputs.username && inputs.password && inputs.password_confirmation) {
 				break;
 			}
+		}
+
+		if(inputs.username && inputs.password) {
+			candidates.push(inputs);
+			continue;
+		}
+		else if(allow_password_only && inputs.password) {
+			candidates.push(inputs);
+			continue;
 		}
 	}
 
 	for(var candidate_idx=0; candidate_idx < candidates.length; candidate_idx++) {
 		var inputs = candidates[candidate_idx];
 
-		if(inputs.username === document.activeElement || inputs.password === document.activeElement) {
+		if(inputs.password === document.activeElement || inputs.username === document.activeElement) {
 			console.log("passafari_input_candidates: using focused fields.")
 			candidates = [ inputs ];
 			break;
