@@ -1,6 +1,6 @@
 # passafari.safariextension
 
-Extensions to allow Safari to auto form-fill passwords from KeePass (requires KeePassHttp)
+Extensions to allow Safari to auto form-fill passwords via KeePassHTTP.
 
 TODO write some useful stuff.
 
@@ -12,9 +12,18 @@ TODO write some useful stuff.
 
 TODO write some useful stuff.
 
+### Symbolic Meaning
+
+- **Fill-In**: ![font-awesome-pencil-square-o](https://raw.githubusercontent.com/mmichaa/passafari.safariextension/master/images/font-awesome-pencil-square-o.png)
+- **Update**: ![font-awesome-floppy-o](https://raw.githubusercontent.com/mmichaa/passafari.safariextension/master/images/font-awesome-floppy-o.png)
+- **Add**: ![font-awesome-plus-square-o](https://raw.githubusercontent.com/mmichaa/passafari.safariextension/master/images/font-awesome-plus-square-o.png)
+
 ## Settings
 
-TODO write some useful stuff.
+- **Hostname & Port**: TODO write some useful stuff.
+- **URL-Format**: TODO write some useful stuff.
+- **Submit-URL-Format**: TODO write some useful stuff.
+- **Language**: TODO write some useful stuff.
 
 ## Features
 
