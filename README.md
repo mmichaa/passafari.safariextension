@@ -6,7 +6,13 @@ TODO write some useful stuff.
 
 ## Installation
 
-TODO write some useful stuff.
+1. Download `passafari` repo
+2. Sign up to be a Safari Dev
+2. Obtain a cert: https://developer.apple.com/membercenter/index.action
+3. Activate Develop menu in Safari (Safari > Preferences > Advanced)
+4. Select menu item: Develop > Show Extension Builder
+5. Add extension and choose the directory where you've extracted `passafari` repo
+6. Click `install` to install the extension 
 
 ## Usage
 
