@@ -6,7 +6,10 @@ TODO write some useful stuff.
 
 ## Installation
 
-TODO write some useful stuff.
+1. Select the 'releases' tab
+2. Download the latest release of passafari.safariextz
+3. Double click the file, or drag it into the extensions window in the Safari settings.
+4. Installed! Test it out, it should begin working immediately.
 
 ## Usage
 
