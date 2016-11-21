@@ -6,6 +6,8 @@ TODO write some useful stuff.
 
 ## Installation
 
+The following instructions require safari version 10+. If you are using a previous version of safari, you will need to figure out how to install 3rd party extensions yourself (using a developer account I believe). 
+
 1. Select the 'releases' tab
 2. Download the latest release of passafari.safariextz
 3. Double click the file, or drag it into the extensions window in the Safari settings.
